@@ -1,5 +1,5 @@
 # language: pt
-
+@test
 Funcionalidade: Validar acessibilidade da home
 Como usuário
 Eu quero verificar se ao clicar no logo serei redirecionado para página principal

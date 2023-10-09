@@ -1,6 +1,6 @@
 
 # language: pt
-
+@test
 Funcionalidade: Validação Banner
 Como usuário
 Eu quero verificar se imagem do baner é a mesma

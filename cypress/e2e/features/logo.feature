@@ -1,5 +1,5 @@
 # language: pt
-
+@test
 Funcionalidade: Validação do logo pagina home
 Como usuário
 Eu quero verificar se ao clicar no logo serei redirecionado para página principal
