@@ -1,0 +1,27 @@
+{
+  "name": "curso-cypress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "Modo Interativo Cypress": "npx cypress open --env allure=true",
+    "Executar modo headless": "npx cypress run --env allure=true",
+    "buildAllure": "allure generate report/allure-report -o report/compilado --clean",
+    "Allure Local": "allure serve report/allure-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@frsource/cypress-plugin-visual-regression-diff": "^3.3.10",
+    "@shelex/cypress-allure-plugin": "^2.40.0",
+    "allure-commandline": "^2.24.0",
+    "axe-core": "^4.8.2",
+    "cypress": "^12.14.0",
+    "cypress-axe": "^1.5.0"
+  },
+  "dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^18.0.6",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.1.3"
+  }
+}
