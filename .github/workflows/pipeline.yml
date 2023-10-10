@@ -31,6 +31,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm install
+      - run: chmod -R a+w cypress/screenshots
+      - run: chmod -R a+w cypress/report
       - name: Cypress run 
         uses: cypress-io/github-action@v2
         with: 
