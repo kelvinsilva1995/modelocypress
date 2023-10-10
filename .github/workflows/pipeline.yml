@@ -27,10 +27,9 @@ jobs:
   test:
     name: Cypress run
     runs-on: ubuntu-latest
-    container: cypress/browsers:node14.16.0-chrome90-ff88
+    container: cypress/browsers:node18.6.0-chrome105-ff104
     steps:
       - uses: actions/checkout@v2
-      - run: npm install @types/node --save-dev
       - run: npm install
       - name: Cypress run 
         uses: cypress-io/github-action@v2
