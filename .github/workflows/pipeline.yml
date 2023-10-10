@@ -40,8 +40,12 @@ jobs:
       - run: chmod -R a+w cypress/videos
       - run: chmod -R a+w cypress/screenshots
       - run:  chmod -R a+w cypress/report
-
-
+      - name: Debug info
+        run: |
+          echo "PATH: $PATH"
+          echo "Node.js version: $(node --version)"
+          echo "npx version: $(npx --version)"
+          
       - name: Cypress run 
         uses: cypress-io/github-action@v2
         with: 
