@@ -31,12 +31,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm install
+      
+     # Etapa de criação das pastas
+     
+      - run: mkdir -p cypress/screenshots
+      - run: mkdir -p cypress/report
+    # Configuração da permissão
       - run: chmod -R a+w cypress/screenshots
-      - run: chmod -R a+w cypress/report
+      - run:  chmod -R a+w cypress/report
+
+
       - name: Cypress run 
         uses: cypress-io/github-action@v2
         with: 
-         command: npm run cypress:allure
+         command: npm run cypress:allure 
           # command: npm run ${{github.event.inputs.teste || env.DEFAULT_TESTE}} --browser ${{github.event.inputs.browser || env.DEFAULT_BROWSER}}
       
       - name: Get Allure History
