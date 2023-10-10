@@ -4,10 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "Modo Interativo Cypress": "npx cypress open --env allure=true",
-    "Executar modo headless": "npx cypress run --env allure=true",
-    "buildAllure": "allure generate report/allure-report -o report/compilado --clean",
-    "Allure Local": "allure serve report/allure-report",
     "cypress:runner": "cypress open",
     "cypress:execution": "cypress run",
     "cypress:allure": "npx cypress run -e TAGS=\"@test\" --env allure=true --config video=false",
