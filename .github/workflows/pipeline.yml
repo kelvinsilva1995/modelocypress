@@ -33,10 +33,11 @@ jobs:
       - run: npm install
       
      # Etapa de criação das pastas
-     
+      - run: mkdir -p cypress/videos
       - run: mkdir -p cypress/screenshots
       - run: mkdir -p cypress/report
     # Configuração da permissão
+      - run: chmod -R a+w cypress/videos
       - run: chmod -R a+w cypress/screenshots
       - run:  chmod -R a+w cypress/report
 
