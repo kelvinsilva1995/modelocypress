@@ -50,7 +50,8 @@ jobs:
         uses: cypress-io/github-action@v2
         with: 
         #  command: npm run cypress:allure 
-          command: npx cypress run --browser ${{github.event.inputs.browser || env.DEFAULT_BROWSER}}
+         run: npm run cypress:allure 
+          # command: npx cypress run --browser ${{github.event.inputs.browser || env.DEFAULT_BROWSER}}
         #  command: npm run ${{github.event.inputs.teste || env.DEFAULT_TESTE}} --browser ${{github.event.inputs.browser || env.DEFAULT_BROWSER}}
       
       - name: Get Allure History
