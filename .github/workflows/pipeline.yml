@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     container: cypress/browsers:node18.6.0-chrome105-ff104
     steps:
-      - uses: cypress-io/github-action@v2
+      - uses: actions/checkout@v2
       - run: npm install --verbose
       
      # Etapa de criação das pastas
