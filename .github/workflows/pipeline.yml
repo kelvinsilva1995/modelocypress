@@ -85,12 +85,28 @@ jobs:
           publish_dir: allure-history
           keep_files: true
 
-      - name: Send Slack notification 
-        uses: rtCamp/action-slack-notify@v2 
-        env:
-          SLACK_WEBHOOK : ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_COLOR : ${{ job.status }}
-          SLACK_ICON : ${{ job.status == 'success' ? 'https://cdn-icons-png.flaticon.com/512/148/148767.png?size=48' : 'https://cdn.icon-icons.com/icons2/1378/PNG/512/dialogerror_92823.png?size=48' }}
-          SLACK_MESSAGE : ${{ job.status == 'success' ? 'Sucesso na execução de testes do PR :white_check_mark:' : 'Falha na execução de testes do PR :fire:' }}
-          SLACK_TITLE : ${{ job.status == 'success' ? 'Sucesso na execução de testes do PR :white_check_mark:' : 'Falha na execução de testes do PR :fire:' }}
-          SLACK_USERNAME : ${{ job.status == 'success' ? 'SUCESSO' : 'FALHA' }}
+      - name : Set env for success 
+        if : ${{ success() }} 
+        run : | 
+           echo "SLACK_ICON=https://cdn-icons-png.flaticon.com/512/148/148767.png?size=48" >> $GITHUB_ENV 
+           echo "SLACK_MESSAGE=Sucesso na execução de testes do PR :white_check_mark:" >> $GITHUB_ENV 
+           echo "SLACK_TITLE=Sucesso na execução de testes do PR :white_check_mark:" >> $GITHUB_ENV 
+           echo "SLACK_USERNAME=SUCESSO" >> $GITHUB_ENV 
+
+      - name : Set env for failure 
+        if : ${{ failure() }} 
+        run : | 
+           echo "SLACK_ICON=https://cdn.icon-icons.com/icons2/1378/PNG/512/dialogerror_92823.png?size=48" >> $GITHUB_ENV 
+           echo "SLACK_MESSAGE=Falha na execução de testes do PR :fire:" >> $GITHUB_ENV 
+           echo "SLACK_TITLE=Falha na execução de testes do PR :fire:" >> $GITHUB_ENV 
+           echo "SLACK_USERNAME=FALHA" >> $GITHUB_ENV 
+
+      - name : Send Slack notification  
+        uses : rtCamp/action-slack-notify@v2  
+        env : 
+           SLACK_WEBHOOK : ${{ secrets.SLACK_WEBHOOK }} 
+           SLACK_COLOR : ${{ job.status }} 
+           SLACK_ICON : ${{ env.SLACK_ICON }} 
+           SLACK_MESSAGE : ${{ env.SLACK_MESSAGE }} 
+           SLACK_TITLE : ${{ env.SLACK_TITLE }} 
+           SLACK_USERNAME : ${{ env.SLACK_USERNAME }}
