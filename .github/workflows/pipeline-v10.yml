@@ -46,9 +46,11 @@ jobs:
             echo "Node.js version: $(node --version)"
             echo "npx version: $(npx --version)"
       - name: Cypress run 
-        uses: cypress-io/github-action@v2
-        with: 
-         command: npm run cypress:allure
+        # uses: cypress-io/github-action@v2
+        run: |
+          echo "Executando comando"
+          npm run cypress:allure
+        shell: bash
           # command: npm run ${{github.event.inputs.teste || env.DEFAULT_TESTE}} --browser ${{github.event.inputs.browser || env.DEFAULT_BROWSER}}
       
       - name: Get Allure History
