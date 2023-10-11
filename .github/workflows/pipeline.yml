@@ -59,7 +59,8 @@ jobs:
       - name: Cypress run 
         uses: cypress-io/github-action@v2
         with:
-          command-prefixes: npm run cypress:${{ matrix.browser }}
+          command: npm run cypress:allure
+          # command-prefixes: npm run cypress:${{ matrix.browser }}
       
       - name: Get Allure History
         uses: actions/checkout@v2
