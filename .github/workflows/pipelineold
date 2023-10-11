@@ -1,0 +1,202 @@
+# name: Execução automação de testes
+
+# on:
+#   pull_request:
+#       types: [synchronize]
+#       paths-ignore:
+#         - '**.md'
+#   push:
+#     branches:
+#       - master
+#   workflow_dispatch:
+#     inputs:
+#       teste:
+#         description: 'Selecionar testes a serem executados: roteiro / test'
+#         required: true
+#         default: 'test'
+#       browser:
+#         description: 'Selecionar o browser: chrome / electron / firefox'
+#         required: false
+#         default: 'chrome'
+
+# env:
+#   DEFAULT_TESTE: "roteiro"
+#   DEFAULT_BROWSER: "chrome"
+
+# jobs:
+#   test:
+#     name: Cypress run
+#     runs-on: ubuntu-latest
+#     container: cypress/browsers:node-18.16.0-chrome-114.0.5735.133-1-ff-114.0.2-edge-114.0.1823.51-1
+#     steps:
+#       - uses: actions/checkout@v2
+#       - run: npm install --verbose
+      
+#      # Etapa de criação das pastas
+#       - run: mkdir -p cypress/videos
+#       - run: mkdir -p cypress/screenshots
+#       - run: mkdir -p cypress/report
+#     # Configuração da permissão
+#       - run: chmod -R a+w cypress/videos
+#       - run: chmod -R a+w cypress/screenshots
+#       - run:  chmod -R a+w cypress/report
+#       - name: Debug info
+#         run: |
+#           echo "PATH: $PATH"
+#           echo "Node.js version: $(node --version)"
+#           echo "npx version: $(npx --version)"
+          
+#       - name: Cypress run 
+#         uses: cypress-io/github-action@v2
+#         with: 
+#          command: npm run cypress:allure 
+#         #  run: npm run cypress:allure 
+#           # command: npx cypress run --browser ${{github.event.inputs.browser || env.DEFAULT_BROWSER}}
+#         #  command: npm run ${{github.event.inputs.teste || env.DEFAULT_TESTE}} --browser ${{github.event.inputs.browser || env.DEFAULT_BROWSER}}
+      
+#       - name: Get Allure History
+#         uses: actions/checkout@v2
+#         if: always()
+#         with:
+#           ref: gh-pages
+#           path: gh-pages
+      
+#       - name: Generate Allure Report
+#         uses: simple-elf/allure-report-action@master
+#         if: always()
+#         with:
+#           allure_results: allure-results
+#           allure_history: allure-history
+#           keep_reports: 20
+      
+#       - name: Deploy report to Github Pages
+#         if: always()
+#         uses: peaceiris/actions-gh-pages@v3
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           PUBLISH_BRANCH: gh-pages
+#           publish_dir: allure-history
+#           keep_files: true
+#         env:
+#           PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+#           PUBLISH_BRANCH: gh-pages
+#           PUBLISH_DIR: allure-history
+#       - name: Enviar notificação Slack - Sucesso
+#         if: ${{ success() }}
+#         uses: rtCamp/action-slack-notify@v2
+#         env:
+#           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+#           SLACK_COLOR: ${{ job.status }}
+#           SLACK_ICON: https://cdn-icons-png.flaticon.com/512/148/148767.png?size=48
+#           SLACK_MESSAGE: 'Sucesso na execução de testes do PR :white_check_mark:'
+#           SLACK_TITlE: 'Sucesso na execução de testes do PR :white_check_mark:'
+#           SLACK_USERNAME: SUCESS0
+
+#       - name: Enviar notificação Slack - Falha
+#         if: ${{ failure() }}
+#         uses: rtCamp/action-slack-notify@v2
+#         env:
+#           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+#           SLACK_COLOR: ${{ job.status }}
+#           SLACK_ICON: https://cdn.icon-icons.com/icons2/1378/PNG/512/dialogerror_92823.png?size=48
+#           SLACK_MESSAGE: 'Falha na execução de testes do PR :fire:'
+#           SLACK_TITlE: 'Falha na execução de testes do PR :fire:'
+#           SLACK_USERNAME: FALHA
+
+name: Execução automação de testes
+
+on:
+  pull_request:
+      types: [synchronize]
+      paths-ignore:
+        - '**.md'
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      teste:
+        description: 'Selecionar testes a serem executados: roteiro / test'
+        required: true
+        default: 'test'
+      browser:
+        description: 'Selecionar o browser: chrome / electron / firefox'
+        required: false
+        default: 'chrome'
+
+env:
+  DEFAULT_TESTE: "roteiro"
+  DEFAULT_BROWSER: "chrome"
+
+jobs:
+  test:
+    name: Cypress run
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node-18.16.0-chrome-114.0.5735.133-1-ff-114.0.2-edge-114.0.1823.51-1
+    strategy:
+      matrix:
+        browser: ['chrome', 'firefox', 'electron']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm install --verbose
+      
+     # Etapa de criação das pastas
+      - run: mkdir -p cypress/videos
+      - run: mkdir -p cypress/screenshots
+      - run: mkdir -p cypress/report
+    # Configuração da permissão
+      - run: chmod -R a+w cypress/videos
+      - run: chmod -R a+w cypress/screenshots
+      - run:  chmod -R a+w cypress/report
+      - name: Debug info
+        run: |
+          echo "PATH: $PATH"
+          echo "Node.js version: $(node --version)"
+          echo "npx version: $(npx --version)"
+          
+      - name: Cypress run 
+        uses: cypress-io/github-action@v2
+        with:
+          command-prefixes: npm run cypress:${{ matrix.browser }}
+      
+      - name: Get Allure History
+        uses: actions/checkout@v2
+        if: always()
+        with:
+          ref: gh-pages
+          path: gh-pages
+      
+      - name: Generate Allure Report
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        with:
+          allure_results: allure-results
+          allure_history: allure-history
+          keep_reports: 20
+      
+      - name: Deploy report to Github Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          publish_dir: allure-history
+          keep_files: true
+
+      - name: Send Slack notification 
+        uses: rtCamp/action-slack-notify@v2 
+        env:
+          SLACK_WEBHOOK : ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_COLOR : ${{ job.status }}
+          SLACK_ICON : ${{ job.status == 'success' ? 'https://cdn-icons-png.flaticon.com/512/148/148767.png?size=48' : 'https://cdn.icon-icons.com/icons2/1378/PNG/512/dialogerror_92823.png?size=48' }}
+          SLACK_MESSAGE : ${{ job.status == 'success' ? 'Sucesso na execução de testes do PR :white_check_mark:' : 'Falha na execução de testes do PR :fire:' }}
+          SLACK_TITLE : ${{ job.status == 'success' ? 'Sucesso na execução de testes do PR :white_check_mark:' : 'Falha na execução de testes do PR :fire:' }}
+          SLACK_USERNAME : ${{ job.status == 'success' ? 'SUCESSO' : 'FALHA' }}
