@@ -67,11 +67,11 @@ jobs:
           ref: gh-pages
           path: allure-history
 
-      - name: Copy Allure report artifacts
-        run: |
-          mkdir -p allure-history
-          cp -r allure-results allure-history/results
-          cp -r allure-report allure-history/report
+      # - name: Copy Allure report artifacts
+      #   run: |
+      #     mkdir -p allure-history
+      #     cp -r allure-results allure-history/results
+      #     cp -r allure-report allure-history/report
 
       - name: Deploy report to Github Pages
         uses: peaceiris/actions-gh-pages@v3
