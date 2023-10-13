@@ -48,14 +48,18 @@ jobs:
           echo "Node.js version: $(node --version)"
           echo "npx version: $(npx --version)"
 
-      - name: Cypress run
-        id: cypress_run
-        run: |
-          npm run cypress:allure || exit 0
-          # Capture the exit code and set it as an output
-          # If Cypress run fails, it will still execute the subsequent steps
-        if: ${{ always() }}
-        shell: bash  
+      - name: Cypress run 
+        uses: cypress-io/github-action@v2
+        with: 
+           command: npm run cypress:allure || exit 0
+      # - name: Cypress run
+      #   id: cypress_run
+      #   run: |
+      #     npm run cypress:allure || exit 0
+      #     # Capture the exit code and set it as an output
+      #     # If Cypress run fails, it will still execute the subsequent steps
+      #   if: ${{ always() }}
+      #   shell: bash  
       #  run: npm run cypress:allure 
         # command: npx cypress run --browser ${{github.event.inputs.browser || env.DEFAULT_BROWSER}}
       #  command: npm run ${{github.event.inputs.teste || env.DEFAULT_TESTE}} --browser ${{github.event.inputs.browser || env.DEFAULT_BROWSER}}
