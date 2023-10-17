@@ -3,7 +3,7 @@ name: Cypress Tests with Allure Reporting
 on:
   push:
     branches: [ master ]
-  workflow_dispatch:
+  manual:
     inputs:
       trigger:
         description: "Trigger the pipeline manually"
@@ -23,6 +23,9 @@ jobs:
 
       - name: Install Cypress
         run: npm install cypress@12.14.0
+
+      - name: Install Allure reporter
+        run: npm install @shelex/cypress-allure-plugin
 
       - name: Run Cypress tests with Allure reporting
         run: npx cypress run --reporter allure
