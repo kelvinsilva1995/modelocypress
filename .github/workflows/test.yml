@@ -28,7 +28,7 @@ jobs:
         run: npm install @shelex/cypress-allure-plugin
 
       - name: Run Cypress tests with Allure reporting
-        run: npx cypress run --reporter allure
+        run: npx cypress run --env allure=true --config video=false
 
       - name: Upload Allure reports to GitHub Pages
         uses: actions/upload-artifact@v3
