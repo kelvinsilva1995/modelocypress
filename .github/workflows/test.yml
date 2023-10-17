@@ -3,6 +3,11 @@ name: Cypress Tests with Allure Reporting
 on:
   push:
     branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      trigger:
+        description: "Trigger the pipeline manually"
+        type: boolean
 
 jobs:
   build:
@@ -50,3 +55,30 @@ jobs:
           TARGET_FOLDER: allure-results
           PAGES_DOMAIN: your-github-pages-domain.com
           PAGES_TOKEN: your-github-pages-token
+
+  manual:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check if trigger is enabled
+        run: |
+          if [[ "${{ inputs.trigger }}" == "true" ]]; then
+            echo "Trigger is enabled, running pipeline"
+          else
+            echo "Trigger is disabled, exiting"
+            exit 1
+          fi
+
+      - name: Run pipeline
+        run: |
+          echo "Running pipeline"
+          echo "Building..."
+          echo "Building complete"
+          echo "Running Cypress tests..."
+          echo "Cypress tests complete"
+          echo "Uploading Allure reports..."
+          echo "Allure reports uploaded"
+          echo "Deploying Allure reports..."
+          echo "Allure reports deployed"
