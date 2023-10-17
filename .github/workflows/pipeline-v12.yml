@@ -1,8 +1,10 @@
 name: Execução automação de testes
 
 on:
+  schedule:
+    - cron: '* 10 * * 1-5'
   pull_request:
-    types: [synchronize]
+    types: [synchronize,ready_for_review, review_requested, synchronize]
     paths-ignore:
       - '**.md'
   push:
@@ -69,12 +71,6 @@ jobs:
       - name: Run Cypress tests with Allure reporting
         run: npx cypress run --env allure=true --config video=false || exit 0
       
-      - name: Download Allure reports
-        uses: actions/download-artifact@v3
-        with:
-          name: allure-results
-          path: allure-results
-      
       - name: Get Allure History
         uses: actions/checkout@v2
         if: always()
@@ -114,6 +110,7 @@ jobs:
           SLACK_MESSAGE: 'Sucesso na execução de testes do PR :white_check_mark:'
           SLACK_TITlE: 'Sucesso na execução de testes do PR :white_check_mark:'
           SLACK_USERNAME: SUCESS0
+          URL: https://kelvinsilva1995.github.io/modelocypress/
 
       - name: Enviar notificação Slack - Falha
         if: ${{ failure() }}
@@ -125,6 +122,7 @@ jobs:
           SLACK_MESSAGE: 'Falha na execução de testes do PR :fire:'
           SLACK_TITlE: 'Falha na execução de testes do PR :fire:'
           SLACK_USERNAME: FALHA
+          URL: https://kelvinsilva1995.github.io/modelocypress/
 
 
 # name: Execução automação de testes
