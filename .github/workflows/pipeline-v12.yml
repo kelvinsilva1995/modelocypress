@@ -27,7 +27,7 @@ jobs:
   test:
     name: Cypress run
     runs-on: ubuntu-latest
-    container: cypress/browsers:node-14.17.0-chrome-90
+    container: cypress/browsers:node-14.17.0-chrome-90-ff-78
     steps:
       - uses: actions/checkout@v2
       - run: npm install
