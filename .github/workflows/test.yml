@@ -1,0 +1,52 @@
+name: Cypress Tests with Allure Reporting
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install Cypress
+        run: npm install cypress@12.14.0
+
+      - name: Run Cypress tests with Allure reporting
+        run: npx cypress run --reporter allure
+
+      - name: Upload Allure reports to GitHub Pages
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-results
+          path: allure-results
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download Allure reports from GitHub Pages
+        uses: actions/download-artifact@v3
+        with:
+          name: allure-results
+          path: allure-results
+
+      - name: Deploy Allure reports to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          GITHUB_TOKEN: ${{ github.token }}
+          BASE_BRANCH: gh-pages
+          FOLDER: allure-results
+          TARGET_FOLDER: allure-results
+          PAGES_DOMAIN: your-github-pages-domain.com
+          PAGES_TOKEN: your-github-pages-token
