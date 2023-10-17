@@ -110,7 +110,7 @@ jobs:
           SLACK_MESSAGE: 'Sucesso na execução de testes do PR :white_check_mark:'
           SLACK_TITlE: 'Sucesso na execução de testes do PR :white_check_mark:'
           SLACK_USERNAME: SUCESS0
-          URL: https://kelvinsilva1995.github.io/modelocypress/
+          MSG_MINIMAL: https://kelvinsilva1995.github.io/modelocypress/
 
       - name: Enviar notificação Slack - Falha
         if: ${{ failure() }}
@@ -122,7 +122,7 @@ jobs:
           SLACK_MESSAGE: 'Falha na execução de testes do PR :fire:'
           SLACK_TITlE: 'Falha na execução de testes do PR :fire:'
           SLACK_USERNAME: FALHA
-          URL: https://kelvinsilva1995.github.io/modelocypress/
+          MSG_MINIMAL: https://kelvinsilva1995.github.io/modelocypress/
 
 
 # name: Execução automação de testes
