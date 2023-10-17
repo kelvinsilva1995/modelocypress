@@ -70,7 +70,7 @@ jobs:
         run: npx cypress run --env allure=true --config video=false || exit 0
 
       - name: Get Allure History
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: gh-pages
           path: allure-history
@@ -82,7 +82,7 @@ jobs:
       #     cp -r allure-report allure-history/report
 
       - name: Deploy report to Github Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           PUBLISH_BRANCH: gh-pages
