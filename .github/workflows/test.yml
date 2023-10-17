@@ -3,7 +3,7 @@ name: Cypress Tests with Allure Reporting
 on:
   push:
     branches: [ master ]
-  manual:
+  workflow_dispatch:
     inputs:
       trigger:
         description: "Trigger the pipeline manually"
