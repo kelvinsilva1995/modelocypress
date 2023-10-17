@@ -68,7 +68,13 @@ jobs:
 
       - name: Run Cypress tests with Allure reporting
         run: npx cypress run --env allure=true --config video=false || exit 0
-
+      
+      - name: Download Allure reports
+        uses: actions/download-artifact@v3
+        with:
+          name: allure-results
+          path: allure-results
+      
       - name: Get Allure History
         uses: actions/checkout@v2
         if: always()
